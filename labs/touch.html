@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8' />
+		
+		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		
+		<title>mobile event | show in canvas</title>
+		
+		<link rel="stylesheet" type="text/css" href="../common/reset.css" />
+		<style>
+			body{
+			    -webkit-user-select: none;	
+			}
+		</style>
+	</head>
+	<body style="background:#333;">
+		<canvas id="c" style="width:100%;height:100%;"></canvas>
+		<ul id="t" style="position:absolute;top:0;left:0;color:#fff;"><li></li></ul>
+		<script>
+		try{
+			'use strict';
+			var dp = window.devicePixelRatio || 1;
+			// var dp = 1;
+			var canvas = document.getElementById('c');
+			var ctx = canvas.getContext('2d');
+			var requestAnimationFrame = null
+	            || window.requestAnimationFrame
+	            || window.mozRequestAnimationFrame
+	            || window.webkitRequestAnimationFrame
+	            || window.msRequestAnimationFrame
+	            || window.oRequestAnimationFrame
+	            || function(callback) {setTimeout(callback, 1000 / opts.fps);};
+	        var objList = [], namedObj = {};
+	        //优化用
+			var miniCanvas = document.createElement('canvas');
+			var miniCtx = miniCanvas.getContext('2d');
+	        
+			var text = document.getElementById('t');
+			
+			var showText = function(msg){
+				var li = document.createElement('li');
+				li.innerHTML = msg;
+				t.insertBefore(li, t.firstChild);
+				setTimeout(function(){t.removeChild(li)},3000);
+			}
+			var canvasFunc = {
+				'flash' : function(){
+					ctx.clearRect(0,0,canvas.width,canvas.height);
+					objList.forEach(function(obj){
+						obj.draw();
+					});
+					requestAnimationFrame(canvasFunc.flash);
+				},
+				'fullScreen' : function(){
+					canvas.width = document.documentElement.clientWidth * dp;
+					canvas.height = document.documentElement.clientHeight * dp;
+				}
+			}
+			var Cube = function(x,y,r,rotate){
+				this.protoX = this.x = x*dp || 0;
+				this.protoY = this.y = y*dp || 0;
+				this.protoR = this.r = r*dp || 200;
+				this.protoRotate = this.rotate = 0;
+				this.protoScale = this.scale = 1;
+			}
+			Cube.prototype.setPos = function(x, y){
+				this.x = x*dp;
+				this.y = y*dp;
+			}
+			Cube.prototype.setSize = function(r){
+				this.r = r*dp;
+			}
+			Cube.prototype.setRotate = function(n){
+				this.rotate = n;
+			}
+			Cube.prototype.setScale = function(n){
+				this.scale = n;
+			}
+			Cube.prototype.draw = function(){
+				ctx.save();
+				
+				// miniCanvas.width = miniCanvas.height = 2 * this.r+4;
+				// miniCtx.translate(.5,.5);
+				// miniCtx.save();
+				// miniCtx.strokeStyle = 'hsl(0,80%,100%)';
+				// miniCtx.fillStyle = 'hsl(0,80%,100%)';
+				// miniCtx.strokeRect(0,0,2 * this.r,2*this.r);
+				// miniCtx.restore();
+				// ctx.translate(this.x-this.r, this.y-this.r);
+				
+				ctx.translate(this.x, this.y);
+				ctx.rotate(this.rotate);
+				ctx.scale(this.scale,this.scale);
+				
+				// ctx.drawImage(miniCanvas,0,0);
+				// ctx.strokeRect(-this.r,-this.r,2 * this.r,2*this.r);
+				
+				ctx.beginPath();
+				ctx.arc(0,0,this.r,0*Math.PI/2 + .2, 1*Math.PI/2-.2,false);
+				ctx.stroke();
+				ctx.closePath();
+				ctx.beginPath();
+				ctx.arc(0,0,this.r,1*Math.PI/2 + .2, 2*Math.PI/2-.2,false);
+				ctx.stroke();
+				ctx.closePath();
+				ctx.beginPath();
+				ctx.arc(0,0,this.r,2*Math.PI/2 + .2, 3*Math.PI/2-.2,false);
+				ctx.stroke();
+				ctx.closePath();
+				ctx.beginPath();
+				ctx.arc(0,0,this.r,3*Math.PI/2 + .2, 4*Math.PI/2-.2,false);
+				ctx.stroke();
+				ctx.closePath();
+				ctx.beginPath();
+				ctx.moveTo(0, 30);ctx.lineTo(0, -30);
+				ctx.moveTo(30, 0);ctx.lineTo(-30, 0);
+				ctx.stroke();
+				ctx.closePath();
+				ctx.beginPath();
+				ctx.moveTo(this.r - 30, 0);ctx.lineTo(this.r + 30, 0);
+				ctx.moveTo(-this.r - 30, 0);ctx.lineTo(-this.r + 30, 0);
+				ctx.stroke();
+				ctx.closePath();
+				ctx.beginPath();
+				ctx.strokeStyle = '#a00';
+				ctx.moveTo(0, this.r - 30);ctx.lineTo(0, this.r + 30);
+				ctx.moveTo(0, -this.r + 30);ctx.lineTo(0, -this.r - 30);
+				ctx.stroke();
+				ctx.closePath();
+				
+				
+				// if(this.x != this.protoX){
+					// this.x += (this.protoX - this.x)/10;
+				// }
+				// if(this.y != this.protoY){
+					// this.y += (this.protoY - this.y)/10;
+				// }
+				// if(this.r != this.protoR){
+					// this.r += (this.protoR - this.r)/10;
+				// }
+				ctx.restore();
+			}
+			var Mash = function(id,x,y,e){
+				var r = 0;
+				this.id = id;
+				this.protoX = this.x = x*dp || 0;
+				this.protoY = this.y = y*dp || 0;
+				this.protoR = (r || 50)*dp;
+				this.r = 0;
+				this.removing = false;
+
+				this.c = 'hsl('+e.timeStamp/10+', 70%, 80%)';
+			}
+			Mash.prototype.setPos = function(x, y){
+				this.x = x*dp;
+				this.y = y*dp;
+			}
+			Mash.prototype.setSize = function(r){
+				this.r = r*dp;
+			}
+			Mash.prototype.del = function(){
+				this.removing = true;
+			}
+			Mash.prototype.draw = function(){
+				ctx.save();
+				
+				// miniCanvas.width = miniCanvas.height = 2 * this.r;
+				// miniCtx.save();
+				// miniCtx.strokeStyle = 'hsl(0,80%,100%)';
+				// miniCtx.fillStyle = 'hsl(0,80%,100%)';
+				// miniCtx.beginPath();
+				// miniCtx.arc(0,0,this.r,0,2*Math.PI,false);
+				// miniCtx.fill();
+				// miniCtx.closePath();
+				// miniCtx.restore();
+				
+				// ctx.translate(this.x-this.r, this.y-this.r);
+				// try{
+				// ctx.drawImage(miniCanvas,0,0);
+				// }catch(e){alert(e)}
+				
+				ctx.fillStyle = this.c;
+				ctx.translate(this.x, this.y);
+				// ctx.fillStyle = 'hsl(0,80%,100%)';
+				ctx.beginPath();
+				ctx.arc(0,0,this.r,0,2*Math.PI,false);
+				ctx.fill();
+				ctx.closePath();
+				
+				if(!this.removing){
+					if(this.r != this.protoR){
+						this.r += (this.protoR - this.r)/4;
+					}
+				}
+				else{
+					this.r -= this.r/4;
+					if(this.r < .3){
+						objList.splice(objList.indexOf(this),1);
+						delete namedObj['tp'+this.id];
+					}
+				}
+				ctx.restore();
+			}
+			
+			var init = function(){
+				canvasFunc.fullScreen();
+				ctx.translate(.5, .5);
+				ctx.strokeStyle = 'hsl(0,80%,100%)';
+				ctx.fillStyle = 'hsl(0,80%,100%)';
+				canvasFunc.flash();
+				
+				objList.push(namedObj.cb = new Cube(Math.round(document.documentElement.clientWidth/2), Math.round(document.documentElement.clientHeight/2), 100));
+				namedObj.cb.setSize(200);
+				bind();
+			}
+			var bind = function(){
+				//test in ipad
+				
+				//###############################################################
+				//XXX 普通的touch移动，包括：touchstart，touchmove，touchend，touchcancel 
+				//能获取所有触点的信息
+				//不能获得手势信息（其实也能获得）
+				//event里面获得的坐标貌似是所有点的平均数
+				//每个触点的坐标要单独获得
+				//event里面3个有用的列表：
+				//---- touches：屏幕上所有触点的列表
+				//---- targetTouches：绑定的DOM元素上所有触点的列表
+				//---- changedTouches：对应事件所变更的触点的列表
+				//上面每个列表里面都会保存若干个Touch对象
+				//XXX Touch对象的属性
+				//---- identifier：触点id，识别用
+				//---- [page|client|screen][X|Y]：各种坐标
+				//---- target：不解释
+				//###############################################################
+				//XXX 手势事件，包括：gesturestart、gesturechange、gestureend
+				//听说不是标准~~
+				//里面没几个列表
+				//主要有用的属性：
+				//---- rotation：使用手指旋转的角度
+				//---- scale：pinch和push操作（就是放缩那个手势），大于1和小于1对应放缩
+				//根据实验所得，这几个属性都是相对于原始属性的差值（手动加粗），而不是与上次操作的差值
+				//###############################################################
+				//XXX 触发顺序
+				// touchstart 第一个手指接触屏幕时触发
+				// gesturestart 第二个手指接触屏幕时触发
+				// touchstart 第二个手指接触屏幕时触发
+				// gesturechange 两个手指都在屏幕上时，每次手指在屏幕上移动时触发
+				// gestureend 第二个手指 离开屏幕时触发
+				// touchend 第二个手指 离开屏幕时触发
+				// touchend 第一个手指 离开屏幕时触发
+				//###############################################
+				document.addEventListener('touchmove',function(e){
+					//禁用恶心的overscroll
+					e.preventDefault();
+					// showText('touchmove');
+					for(var i = e.changedTouches.length; i; i--){
+						var th = e.changedTouches[i-1];
+						var id = th.identifier;
+						if(namedObj['tp'+id]){
+							namedObj['tp'+id].setPos(th.pageX, th.pageY);
+						}
+					}
+				});
+				//普通的touch开始,
+				document.addEventListener('touchstart',function(e){
+					(c.requestFullScreen || c.webkitRequestFullScreen || function(){})();
+					showText('touchstart');
+					namedObj.cb.setSize(150);
+					for(var i = e.changedTouches.length; i; i--){
+						var th = e.changedTouches[i-1];
+						var id = th.identifier;
+						if(!namedObj['tp'+id]){
+							namedObj['tp'+id] = new Mash(id, th.pageX, th.pageY, e);
+							objList.push(namedObj['tp'+id]);
+						}
+					}
+				});
+				//普通的touch结束
+				document.addEventListener('touchend',function(e){
+					showText('touchend');
+					for(var i = e.changedTouches.length; i; i--){
+						var th = e.changedTouches[i-1];
+						var id = th.identifier;
+						if(namedObj['tp'+id]){
+							namedObj['tp'+id].del();
+						}
+					}
+				});
+				//以下是手势
+				//更多手势需要自己实现
+				//当一个手指按在屏幕上，另一个手指有触发屏幕时，触发。(第三只手指不会触发)
+				document.addEventListener('gesturestart',function(e){
+					showText('gesturestart');
+				});
+				//当触摸屏幕的任何一个手指发生变化的时候，触发
+				document.addEventListener('gesturechange',function(e){
+					// showText('gesturechange');
+					console.log('gesturechange', e);
+					namedObj.cb.setRotate(e.rotation * Math.PI/180);
+					namedObj.cb.setScale(e.scale);
+				});
+				//当你的任何一个手指从屏幕上移开的时候，触发
+				document.addEventListener('gestureend',function(e){
+					showText('gestureend');
+				});
+				//旋屏
+				window.onorientationchange = function(e){
+					alert('orientationchange, body : ' + document.body.clientWidth + ' x ' + document.body.clientHeight);
+				}
+			}
+			document.addEventListener('DOMContentLoaded', init);
+		}catch(e){console.log(e)}
+		</script>
+	</body>
+</html>
