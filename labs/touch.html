@@ -15,6 +15,12 @@
 			body{
 			    -webkit-user-select: none;	
 			}
+			ul{
+			    pointer-events: none;
+			}
+			li{
+				font-size: 12px;
+			}
 		</style>
 	</head>
 	<body style="background:#333;">
@@ -153,7 +159,8 @@
 				this.r = 0;
 				this.removing = false;
 
-				this.c = 'hsl('+e.timeStamp/10+', 70%, 80%)';
+				this.c = 'hsl('+(e.timeStamp/70%360)+', 70%, 80%)';
+
 			}
 			Mash.prototype.setPos = function(x, y){
 				this.x = x*dp;
@@ -267,7 +274,7 @@
 				});
 				//普通的touch开始,
 				document.addEventListener('touchstart',function(e){
-					(c.requestFullScreen || c.webkitRequestFullScreen || function(){})();
+					// (c.requestFullScreen || c.webkitRequestFullScreen || function(){})();
 					showText('touchstart');
 					namedObj.cb.setSize(150);
 					for(var i = e.changedTouches.length; i; i--){
