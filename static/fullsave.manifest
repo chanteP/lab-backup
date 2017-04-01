@@ -1,0 +1,13 @@
+CACHE MANIFEST
+# v1.0.0
+
+CACHE:
+../common/reset.css
+../static/lib/mobile.css
+../static/lib/alpha.js
+../static/lib/alpha.patch.js
+../static/lib/alpha.ui.js
+
+NETWORK:
+
+FALLBACK:
