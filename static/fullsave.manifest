@@ -1,8 +1,8 @@
 CACHE MANIFEST
-# v1.0.0
+# v1.0.1 @170405
 
 CACHE:
-../common/reset.css
+../static/reset.css
 ../static/lib/mobile.css
 ../static/lib/alpha.js
 ../static/lib/alpha.patch.js
