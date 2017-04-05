@@ -1,4 +1,4 @@
-/*!@mtfe/palette@1.1.25*/
+/*!@mtfe/palette@2.0.8*/
 @charset "UTF-8";
 /* base
 ----------------------------------*/
@@ -6,6 +6,7 @@
 reset Stylesheet
 v1.0.0  @150814
 */
+@import "https://s3.meituan.net/v1/mss_b26ab1d1472a43d5ba1a45188d68470a/mtfe-palette/ecom-icons.css";
 html, body, div, span, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 abbr, address, cite, code,
@@ -3125,7 +3126,7 @@ html {
   html {
     -webkit-font-smoothing: antialiased; } }
 
-/* body 
+/* body
 ----------------------------------------------------------------------------------------*/
 body {
   height: 100%;
@@ -3255,7 +3256,10 @@ textarea {
   input[type="time"][disabled],
   input[type="tel"][disabled],
   textarea[disabled] {
-    color: #b2b2b2; }
+    opacity: 1;
+    color: #b2b2b2;
+    text-fill-color: #b2b2b2;
+    -webkit-text-fill-color: #b2b2b2; }
 
 input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-calendar-picker-indicator,
 input[type="date"]::-webkit-inner-spin-button,
@@ -5506,8 +5510,15 @@ input::-webkit-input-placeholder {
 
 @font-face {
   font-family: 'FontAwesome';
-  src: url("http://cs0.meituan.net/cos.ui/font/fontawesome-webfont.eot?v=4.0.1");
-  src: url("http://cs0.meituan.net/cos.ui/font/fontawesome-webfont.eot?#iefix&v=4.0.1") format("embedded-opentype"), url("http://cs0.meituan.net/cos.ui/font/fontawesome-webfont.woff?v=4.0.1") format("woff"), url("http://cs0.meituan.net/cos.ui/font/fontawesome-webfont.ttf?v=4.0.1") format("truetype"), url("http://cs0.meituan.net/cos.ui/font/fontawesome-webfont.svg?v=4.0.1#fontawesomeregular") format("svg");
+  src: url("https://cs0.meituan.net/cos.ui/font/fontawesome-webfont.eot?v=4.0.1");
+  src: url("https://cs0.meituan.net/cos.ui/font/fontawesome-webfont.eot?#iefix&v=4.0.1") format("embedded-opentype"), url("https://cs0.meituan.net/cos.ui/font/fontawesome-webfont.woff?v=4.0.1") format("woff"), url("https://cs0.meituan.net/cos.ui/font/fontawesome-webfont.ttf?v=4.0.1") format("truetype"), url("https://cs0.meituan.net/cos.ui/font/fontawesome-webfont.svg?v=4.0.1#fontawesomeregular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: "ecom-icons";
+  src: url("https://s3.meituan.net/v1/mss_b26ab1d1472a43d5ba1a45188d68470a/mtfe-palette/ecom-icons.eot");
+  src: url("https://s3.meituan.net/v1/mss_b26ab1d1472a43d5ba1a45188d68470a/mtfe-palette/ecom-icons.eot?#iefix") format("eot"), url("https://s3.meituan.net/v1/mss_b26ab1d1472a43d5ba1a45188d68470a/mtfe-palette/ecom-icons.woff2") format("woff2"), url("https://s3.meituan.net/v1/mss_b26ab1d1472a43d5ba1a45188d68470a/mtfe-palette/ecom-icons.woff") format("woff"), url("https://s3.meituan.net/v1/mss_b26ab1d1472a43d5ba1a45188d68470a/mtfe-palette/ecom-icons.ttf") format("truetype"), url("https://s3.meituan.net/v1/mss_b26ab1d1472a43d5ba1a45188d68470a/mtfe-palette/ecom-icons.svg#ecom-icons") format("svg");
   font-weight: normal;
   font-style: normal; }
 
@@ -5590,12 +5601,12 @@ a.btn {
     background: #20BBA9;
     border-color: #20BBA9; }
 
-.btn.line, button.line, .btn.line:active, button.line:active,
-a.btn.line,
+.btn.line:active, button.line:active,
 a.btn.line:active {
-  background: #fff; }
-  .btn.line:not(.mini), button.line:not(.mini), .btn.line:active:not(.mini), button.line:active:not(.mini),
-  a.btn.line:not(.mini),
+  background: #20BBA9;
+  border-color: #20BBA9;
+  color: #fff; }
+  .btn.line:active:not(.mini), button.line:active:not(.mini),
   a.btn.line:active:not(.mini) {
     border-color: #D8D8D8; }
 
@@ -5675,12 +5686,12 @@ a.btn.main {
     background: #20BBA9;
     border-color: #20BBA9; }
 
-.btn.line.main, button.line.main, .btn.line.main:active, button.line.main:active,
-a.btn.line.main,
+.btn.line.main:active, button.line.main:active,
 a.btn.line.main:active {
-  background: #fff; }
-  .btn.line.main:not(.mini), button.line.main:not(.mini), .btn.line.main:active:not(.mini), button.line.main:active:not(.mini),
-  a.btn.line.main:not(.mini),
+  background: #20BBA9;
+  border-color: #20BBA9;
+  color: #fff; }
+  .btn.line.main:active:not(.mini), button.line.main:active:not(.mini),
   a.btn.line.main:active:not(.mini) {
     border-color: #D8D8D8; }
 
@@ -5760,12 +5771,12 @@ a.btn.mark {
     background: #dc4808;
     border-color: #dc4808; }
 
-.btn.line.mark, button.line.mark, .btn.line.mark:active, button.line.mark:active,
-a.btn.line.mark,
+.btn.line.mark:active, button.line.mark:active,
 a.btn.line.mark:active {
-  background: #fff; }
-  .btn.line.mark:not(.mini), button.line.mark:not(.mini), .btn.line.mark:active:not(.mini), button.line.mark:active:not(.mini),
-  a.btn.line.mark:not(.mini),
+  background: #dc4808;
+  border-color: #dc4808;
+  color: #fff; }
+  .btn.line.mark:active:not(.mini), button.line.mark:active:not(.mini),
   a.btn.line.mark:active:not(.mini) {
     border-color: #D8D8D8; }
 
@@ -5845,12 +5856,12 @@ a.btn.strong {
     background: #FF8900;
     border-color: #FF8900; }
 
-.btn.line.strong, button.line.strong, .btn.line.strong:active, button.line.strong:active,
-a.btn.line.strong,
+.btn.line.strong:active, button.line.strong:active,
 a.btn.line.strong:active {
-  background: #fff; }
-  .btn.line.strong:not(.mini), button.line.strong:not(.mini), .btn.line.strong:active:not(.mini), button.line.strong:active:not(.mini),
-  a.btn.line.strong:not(.mini),
+  background: #FF8900;
+  border-color: #FF8900;
+  color: #fff; }
+  .btn.line.strong:active:not(.mini), button.line.strong:active:not(.mini),
   a.btn.line.strong:active:not(.mini) {
     border-color: #D8D8D8; }
 
@@ -5930,12 +5941,12 @@ a.btn.normal {
     background: #ccc;
     border-color: #ccc; }
 
-.btn.line.normal, button.line.normal, .btn.line.normal:active, button.line.normal:active,
-a.btn.line.normal,
+.btn.line.normal:active, button.line.normal:active,
 a.btn.line.normal:active {
-  background: #fff; }
-  .btn.line.normal:not(.mini), button.line.normal:not(.mini), .btn.line.normal:active:not(.mini), button.line.normal:active:not(.mini),
-  a.btn.line.normal:not(.mini),
+  background: #ccc;
+  border-color: #ccc;
+  color: #666; }
+  .btn.line.normal:active:not(.mini), button.line.normal:active:not(.mini),
   a.btn.line.normal:active:not(.mini) {
     border-color: #D8D8D8; }
 
@@ -6015,12 +6026,12 @@ a.btn.disable {
     background: #e5e5e5;
     border-color: #e5e5e5; }
 
-.btn.line.disable, button.line.disable, .btn.line.disable:active, button.line.disable:active,
-a.btn.line.disable,
+.btn.line.disable:active, button.line.disable:active,
 a.btn.line.disable:active {
-  background: #fff; }
-  .btn.line.disable:not(.mini), button.line.disable:not(.mini), .btn.line.disable:active:not(.mini), button.line.disable:active:not(.mini),
-  a.btn.line.disable:not(.mini),
+  background: #e5e5e5;
+  border-color: #e5e5e5;
+  color: #B2B2B2; }
+  .btn.line.disable:active:not(.mini), button.line.disable:active:not(.mini),
   a.btn.line.disable:active:not(.mini) {
     border-color: #D8D8D8; }
 
@@ -6094,13 +6105,11 @@ a.btn {
     margin: 0;
     padding: .1rem .2rem;
     font-size: .26rem; }
-  .btn.line, button.line, .btn.line:active, button.line:active,
-  a.btn.line,
-  a.btn.line:active {
+  .btn.line, button.line,
+  a.btn.line {
     background: #fff; }
-    .btn.line:not(.mini), button.line:not(.mini), .btn.line:active:not(.mini), button.line:active:not(.mini),
-    a.btn.line:not(.mini),
-    a.btn.line:active:not(.mini) {
+    .btn.line:not(.mini), button.line:not(.mini),
+    a.btn.line:not(.mini) {
       border-color: #D8D8D8; }
 
 /*
@@ -6259,9 +6268,8 @@ input.ui-input,
   margin: 0 0.1rem;
   padding: 0 .12rem;
   font-size: .3rem;
-  color: #666;
-  border: 1px solid #E7E7E7;
-  border-radius: .04rem;
+  color: #333;
+  border: 1px solid #D8D8D8;
   box-shadow: none;
   background: #fff; }
 
@@ -6367,7 +6375,6 @@ textarea.ui-input {
   color: #333;
   background: #fff;
   border: 0 solid #E7E7E7;
-  border-top-width: 1px;
   border-bottom-width: 1px;
   /* 箭头 */
   /* 向右箭头 */
@@ -6480,11 +6487,12 @@ a.table-cell {
     direction: ltr; }
 
 .table-cell .ui-input {
-  background: #e8e8e8;
+  background: #fff;
   text-align: center;
   vertical-align: middle; }
   .table-cell .ui-input:focus {
-    background: #cacaca; }
+    background: #fff;
+    border: 1px solid #3DC6B6; }
 
 .table-cell .checkbtn,
 .table-cell .checktab {
@@ -6499,6 +6507,7 @@ textarea.table-cell-input {
   font-size: 0.3rem; }
   input.table-cell-input[disabled],
   textarea.table-cell-input[disabled] {
+    opacity: 1;
     color: #b2b2b2;
     text-fill-color: #b2b2b2;
     -webkit-text-fill-color: #b2b2b2; }
@@ -6583,7 +6592,7 @@ textarea.table-cell-input {
     .tip.tip-common .tip-close:active {
       background-color: #FFD98C; }
     .tip.tip-common .tip-close:after {
-      color: #F5A623;
+      color: #999;
       content: ""; }
     .tip.tip-common.tip-circle {
       border-color: #FFD98C; }
@@ -6600,7 +6609,7 @@ textarea.table-cell-input {
     .tip.tip-success .tip-close:active {
       background-color: #AFE855; }
     .tip.tip-success .tip-close:after {
-      color: #6BAC20;
+      color: #999;
       content: ""; }
     .tip.tip-success:before {
       color: #62CA66;
@@ -6620,7 +6629,7 @@ textarea.table-cell-input {
     .tip.tip-info .tip-close:active {
       background-color: #C5D9F1; }
     .tip.tip-info .tip-close:after {
-      color: #8CB9ED;
+      color: #999;
       content: ""; }
     .tip.tip-info:before {
       color: #8CB9ED;
@@ -6640,7 +6649,7 @@ textarea.table-cell-input {
     .tip.tip-warning .tip-close:active {
       background-color: #FFD98C; }
     .tip.tip-warning .tip-close:after {
-      color: #F5A623;
+      color: #999;
       content: ""; }
     .tip.tip-warning:before {
       color: #FF9D3C;
@@ -6660,7 +6669,7 @@ textarea.table-cell-input {
     .tip.tip-danger .tip-close:active {
       background-color: #FFD9CA; }
     .tip.tip-danger .tip-close:after {
-      color: #F76120;
+      color: #999;
       content: ""; }
     .tip.tip-danger:before {
       color: #F76120;
@@ -6759,7 +6768,7 @@ textarea.table-cell-input {
   left: 0;
   bottom: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
   overflow: auto;
   z-index: 100; }
 
@@ -6777,6 +6786,8 @@ textarea.table-cell-input {
     overflow-y: scroll;
     overflow-scrolling: touch;
     -webkit-overflow-scrolling: touch; }
+    .picker .picker-slider::-webkit-scrollbar {
+      display: none; }
   .picker ul {
     text-align: center;
     height: auto;
@@ -6924,7 +6935,7 @@ textarea.table-cell-input {
     所有有可能通用的变量都放进来吧
 */
 .alert {
-  min-width: 50%;
+  min-width: 72%;
   border-radius: 0.16rem;
   background: #fff;
   box-shadow: rgba(0, 0, 0, 0.3) 0 0.06rem 0.6rem;
@@ -6932,7 +6943,7 @@ textarea.table-cell-input {
   overflow: hidden; }
   @media (max-width: 1000px) {
     .alert {
-      max-width: 90%; } }
+      max-width: 72%; } }
   @media (min-width: 1001px) {
     .alert {
       max-width: 300px; } }
@@ -7014,13 +7025,8 @@ textarea.table-cell-input {
         display: block;
         /*font-weight: 700;*/
         color: inherit; }
-      .alert .alert-btnbox .alert-btn:active {
-        background: #e0e0e0; }
       .alert .alert-btnbox .alert-btn.active {
         color: #3DC6B6; }
-      .alert .alert-btnbox .alert-btn.active:active {
-        background: #3DC6B6;
-        color: #fff; }
       .alert .alert-btnbox .alert-btn.disabled {
         background: #F7F7F7;
         color: #999; }
@@ -7035,14 +7041,12 @@ textarea.table-cell-input {
           border-top: 1px solid #E7E7E7; }
 
 .toast {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  position: absolute;
-  box-sizing: border-box;
   padding: .26rem .3rem;
+  width: 72%;
+  left: 14%;
+  position: absolute;
+  margin: 0 auto;
+  bottom: 3rem;
   background: rgba(0, 0, 0, 0.6);
   border-radius: .06rem;
   color: #fff;
@@ -7050,7 +7054,8 @@ textarea.table-cell-input {
   text-align: center;
   word-break: break-all;
   font-size: 0.26rem;
-  z-index: 500; }
+  z-index: 500;
+  box-sizing: border-box; }
 
 .toast.mini {
   position: absolute;
@@ -7058,7 +7063,7 @@ textarea.table-cell-input {
   transform: translateX(-50%);
   -webkit-transform: translateX(-50%);
   top: initial;
-  bottom: 1.1rem;
+  bottom: 3rem;
   width: 100%;
   max-width: 90%;
   padding: .12rem 0.2rem;
@@ -7277,6 +7282,8 @@ textarea.table-cell-input {
   overflow-x: scroll;
   overflow-scrolling: touch;
   -webkit-overflow-scrolling: touch; }
+  .tab-type3::-webkit-scrollbar {
+    display: none; }
 
 .tab-type1 .tab:after {
   display: inline-block;
