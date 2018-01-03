@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<!-- <html manifest="../static/fullsave.manifest"> -->
+    <head>
+        <meta charset='utf-8' />
+        
+        <meta content="width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=0" name="viewport" />
+        <meta content="yes" name="apple-mobile-web-app-capable" />
+        <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+        <meta content="telephone=no" name="format-detection" />
+        
+        <title>console</title>
+        
+        <link rel="stylesheet" type="text/css" href="../static/reset.css" />
+        <style>
+            html{
+                font-size: 100px;
+            }
+            body{
+                font-size: .20rem;
+                line-height: .3rem;
+            }
+            html,
+            body{
+                height:100%;
+            }
+            .fix-bottom{
+                position: absolute;
+                left: 0;
+                right: 0;
+            }
+            .input-style{
+                -webkit-appearance: none;
+                appearance: none;
+                display: block;
+                width: 90%;
+                height: .3rem;
+                line-height: .3rem;
+                padding: 0 0 0 .25rem;
+                margin: 0;
+                border: none;
+                font-size: .2rem;
+                background: transparent;
+                font:normal normal 400 normal 20px / 30px Arial;
+            }
+            .line-arrow:before{
+                position: absolute;
+                left: 0;
+                top: .1rem;
+                content: '';
+                display: inline-block;
+                width: .08rem;
+                height: .08rem;
+                margin: 0 .1rem 0 .05rem;
+                border: 0 solid #009;
+                border-right-width: .02rem;
+                border-bottom-width: .02rem;
+                -webkit-transform: rotate(-45deg);
+                transform: rotate(-45deg);
+                -webkit-transform-origin: center;
+                transform-origin: center;
+                z-index: 9;
+            }
+            .output{
+                position: relative;
+                padding-left: .28rem;
+                color: #999;
+            }
+            .output:not(.source){
+                color: #666;
+            }            
+            .output.type-number{
+                color: #00a;
+            }
+            .output.type-string{
+                color: rgb(1, 142, 1);
+            }
+            .output.type-node{
+                color: rgb(192, 80, 16);
+            }
+            .output.type-function{
+                color: rgb(226, 174, 4);
+            }
+            .output.type-null{
+                color: rgb(155, 155, 155);
+            }
+            .output.type-error{
+                color: #f00;
+            }
+            .line-arrow.output.source{
+                border-top: 1px solid #dedede;
+            }
+            .line-arrow.output:before{
+                border-color:#999;
+            }
+            .line-arrow.output:not(.source):before{
+                -webkit-transform: rotate(135deg) translate(-.04rem, -.02rem);
+                transform: rotate(135deg) translate(-.04rem, -.02rem);
+            }
+            
+            .suggest-style{
+                color: #ccc;
+            }
+            .suggest-button{
+                position: relative;
+                float: right;
+                width: .3rem;
+                height: .3rem;
+                background: rgb(192, 192, 209);
+            }
+            .suggest-button:before{
+                border-color: #fff;
+            }
+        </style>
+    </head>
+    <body style="background:#f0f0f0;">
+        <ul id="__node__list" class="fix-bottom" style="bottom:.3rem;"></ul>
+        <ul class="fix-bottom" style="left:initial;bottom:.3rem;background:#fff;border:1px solid #dedede;" id="__node__suggestList"></ul>  
+        <div class="fix-bottom line-arrow" style="bottom:0;background:#fff;height:.3rem;border-top:1px solid #dedede;">
+            <div class="fix-bottom input-style suggest-style" style="top:0;" id="__node__suggest"></div>
+            <input class="fix-bottom input-style" style="top:0;" type="text" id="__node__input" />
+            <span class="line-arrow suggest-button" id="__node__useSuggest" ></span>
+        </div>
+        <script>
+            (function(nodeList){
+                var input = nodeList[0],
+                    suggest = nodeList[1],
+                    list = nodeList[2],
+                    suggestList = nodeList[3],
+                    suggestButton = nodeList[4];
+                input.addEventListener('input', function(e){
+                    suggest.textContent = input.value;
+                });
+                input.addEventListener('keyup', function(e){
+                    // console.log(e.keyCode);
+                    if(+e.keyCode === 9 || +e.keyCode === 39){
+                        // tab
+                        return useSuggest();
+                    }
+                    if(+e.keyCode === 13){
+                        run(input.value);
+                        return suggest.textContent = input.value = '';
+                    }
+                    if(+e.keyCode === 38){
+                        // up
+                    }
+                    else if(+e.keyCode === 40){
+                        // down
+                    }
+                    suggest.textContent = suggestInput(input.value) || '';
+                });
+                suggestList.addEventListener('click', function(e){
+                    e.target.tagName === 'LI' && (input.value = e.target.textContent);
+                });
+                suggestButton.addEventListener('click', useSuggest);
+                function useSuggest(){
+                    suggest.textContent && (input.value = suggest.textContent);
+                    input.focus && input.focus();
+                }
+                function run(text){
+                    addInputLine(text);
+                    try{
+                        addOutputLine(eval(text));
+                    }catch(e){
+                        addOutputLine(e.toString(), 'error');
+                    }
+                }
+                function suggestInput(value){
+                    var context;
+                    var matchToken = /([a-zA-Z0-9\.\_\[\]\'\"]*?)?(?:\b(?:\.)?([a-zA-Z0-9\_]+))$/.exec(value);
+                    if(!matchToken){return;}
+                    var contextText = matchToken[1],
+                        propText = matchToken[2];
+                    if(!propText){return;}
+                    try{
+                        context = eval('window.' + (contextText || 'window'));
+                    }catch(e){
+                        console.error(e);
+                    }
+                    if(!context){return;}
+                    var prop, 
+                        index = String(propText).length;
+                    if(typeof context === 'object'){
+                        for(var key in context){
+                            if(key.indexOf(propText) === 0){
+                                prop = key;
+                                break;
+                            }
+                        }
+                    }
+                    return prop ? (value + prop.slice(index)) : null;
+                }
+                function setSuggestList(arr){
+                    suggestList.innerHTML = arr.map(s => {
+                        return '<li>'+s+'</li>';
+                    });
+                }
+                function addInputLine(source){
+                    var line = document.createElement('li');
+                    line.className = 'line-arrow output source';
+                    line.textContent = source;
+                    list.appendChild(line);
+                }
+                function addOutputLine(result, lineStyle){
+                    var line = document.createElement('li');
+                    line.className = 'line-arrow output';
+                    var output = result;
+                    if(!lineStyle){
+                        output = JSON.stringify(result, null, 4);
+                        if(typeof result === 'string'){
+                            output = '"' + result + '"';
+                        }
+                        else if(typeof result === 'function'){
+                            output = result.toString().split('\n').slice(0, 5).join('\n');
+                            lineStyle = 'function';
+                        }
+                        else if(result instanceof HTMLElement){
+                            output = result.outerHTML.split('\n')[0];
+                            lineStyle = 'node';
+                        }
+                        else if(result instanceof EventTarget){
+                            output = result.nodeName;
+                            lineStyle = 'node';
+                        }
+                    }
+                    line.textContent = String(output).replace(/\n/g, '<br />');
+                    checkLineStyle(line, result, lineStyle);
+                    list.appendChild(line);
+                }
+                function checkLineStyle(line, content, lineStyle){
+                    if(lineStyle){
+                        return line.classList.add('type-' + lineStyle);
+                    }
+                    if(typeof content === 'string'){
+                        line.classList.add('type-string');
+                    }
+                    else if(typeof content === 'number'){
+                        line.classList.add('type-number');
+                    }
+                    else if(content === null || content === undefined){
+                        line.classList.add('type-null');
+                    }
+                }
+            })([__node__input, __node__suggest, __node__list,__node__suggestList,__node__useSuggest]);
+        </script>
+    </body>
+</html>
